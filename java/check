@@ -1,0 +1,28 @@
+#!/bin/bash
+
+problem=$1
+
+if [ -d $problem ]; then
+    mkdir -p $problem/bin/
+    if javac -d $problem/bin/ -sourcepath $problem $problem/Main.java; then
+        START=$(date +%s.%N)
+        java -classpath $problem/bin/ Main < $problem/input > $problem/result
+        END=$(date +%s.%N)
+        DIFF=$( echo "(${END} - ${START})" | bc )
+
+        result=$(cat $problem/result)
+        output=$(cat $problem/output)
+
+        if [ "$result" == "$output" ]; then
+            echo "Passed!"
+        else
+            echo "Failed!"
+            echo "Your output:"
+            cat $problem/result
+        fi
+        echo "Elapsed time: $DIFF"
+    fi
+else
+    echo "Problem number $problem is not found."
+fi
+

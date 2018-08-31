@@ -1,0 +1,12 @@
+#!/bin/bash
+
+problem=$1
+
+if [ -d $problem ]; then
+    mkdir -p $problem/bin/
+    if javac -d $problem/bin/ -sourcepath $problem $problem/Main.java $problem/Test.java; then
+        java -classpath $problem/bin/ Test
+    fi
+else
+    echo "Problem number $problem is not found."
+fi
